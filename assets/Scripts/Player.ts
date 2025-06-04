@@ -5,6 +5,7 @@ export default class Player extends cc.Component {
     body: cc.RigidBody;
     get speed_c() { return 2 };
 
+    @property(cc.Float)
     speed: number = 0;
 
     protected onLoad(): void {
@@ -14,7 +15,7 @@ export default class Player extends cc.Component {
         console.log(this.body);
     }
 
-    onKeyDown(event) {
+    onKeyDown(event: any): void {
         switch (event.keyCode) {
             case cc.macro.KEY.a:
                 this.speed = -this.speed_c;
@@ -23,7 +24,7 @@ export default class Player extends cc.Component {
                 this.speed = this.speed_c;
                 break;
             case cc.macro.KEY.space:
-                this.body.applyForceToCenter(cc.v2(0, 1000), true);
+                this.body.applyLinearImpulse(cc.v2(0, 1000), this.body.getWorldCenter(), true);
                 break;
         }
     }
