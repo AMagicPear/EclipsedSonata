@@ -9,10 +9,12 @@ export default class Player extends cc.Component {
     @property(cc.Float)
     speed_c: number = 100
 
-    xSpeed: number = 0
+    isLeftPressed = false
+    isRightPressed = false
 
     protected onLoad(): void {
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+        cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
     }
     protected start(): void {
         // 上下动
@@ -22,19 +24,29 @@ export default class Player extends cc.Component {
         cc.tween(this.node).repeatForever(tween).start()
     }
     protected update(dt: number): void {
-        console.log(this.xSpeed, this.node.x)
-        this.node.x += this.xSpeed * dt
+        if(this.isLeftPressed && this.isRightPressed) return
+        if(!this.isLeftPressed && !this.isRightPressed) return
+        if(this.isLeftPressed) this.node.x -= this.speed_c * dt
+        if(this.isRightPressed) this.node.x += this.speed_c * dt
     }
 
     onKeyDown(event: any): void {
         switch (event.keyCode) {
             case cc.macro.KEY.a:
-                this.xSpeed = -this.speed_c;
-                console.log(this.xSpeed)
+                this.isLeftPressed = true
                 break;
             case cc.macro.KEY.d:
-                this.xSpeed = this.speed_c;
-                console.log(this.xSpeed)
+                this.isRightPressed = true
+                break;
+        }
+    }
+
+    onKeyUp(event: any): void {
+        switch (event.keyCode) {
+            case cc.macro.KEY.a:
+                this.isLeftPressed = false
+            case cc.macro.KEY.d:
+                this.isRightPressed = false
                 break;
         }
     }
