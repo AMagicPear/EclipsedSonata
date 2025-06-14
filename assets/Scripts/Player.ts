@@ -1,4 +1,4 @@
-import { dialogShowEvent } from "./util/EventManager";
+import { dialogShowEvent, playNoteEvent } from "./util/EventManager";
 
 const { ccclass, property } = cc._decorator;
 export type PlayerName = '咚咚' | '淅淅'
@@ -9,6 +9,15 @@ export default class Player extends cc.Component {
 
     @property(cc.String)
     playerName: PlayerName = '咚咚'
+
+    @property(cc.Sprite)
+    sprite: cc.Sprite = null
+
+    @property(cc.SpriteFrame)
+    stillSprite: cc.SpriteFrame = null
+
+    @property(cc.SpriteFrame)
+    playingSprite: cc.SpriteFrame = null
 
     @property(cc.Float)
     speed_c: number = 100
@@ -37,6 +46,12 @@ export default class Player extends cc.Component {
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
         dialogShowEvent.subscribe((show) => { this.disalogStatus = show })
+        playNoteEvent.subscribe(([playerName, i]) => {
+            if (playerName == this.playerName) {
+                this.sprite.spriteFrame = this.playingSprite
+                this.scheduleOnce(() => this.sprite.spriteFrame = this.stillSprite, 0.2)
+            }
+        })
     }
 
     onBeginContact(contact: cc.PhysicsContact, selfCollider: cc.Collider, otherCollider: cc.Collider): void {
@@ -138,7 +153,7 @@ export default class Player extends cc.Component {
         this.dialogText.string = text
     }
 
-    stopSay(){
+    stopSay() {
         this.dialogBg.active = false
     }
 }

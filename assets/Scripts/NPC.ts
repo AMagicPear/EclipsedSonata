@@ -40,9 +40,9 @@ export default class NPC extends cc.Component {
     }
 
     dialogContent = [
-        { role: 0, text: "长老……" },
-        { role: 0, text: "为什么我的鼓……" },
-        { role: 0, text: "它今天敲不响了？" }
+        { role: 1, text: "长老……" },
+        { role: 1, text: "为什么我的鼓……" },
+        { role: 1, text: "它今天敲不响了？" }
     ]
 
     protected onLoad(): void {

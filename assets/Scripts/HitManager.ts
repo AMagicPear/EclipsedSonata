@@ -2,8 +2,8 @@ import { PlayerName } from "./Player";
 import { gainNoteEvent, playNoteEvent } from "./util/EventManager";
 
 const { ccclass, property } = cc._decorator;
-const DongNotes = ['e', 'r', 'q', 'f']
-const XiNotes = ['u', 'o', 'p', 'h']
+// const DongNotes = ['e', 'r', 'q', 'f']
+// const XiNotes = ['u', 'o', 'p', 'h']
 
 @ccclass
 export default class HitManager extends cc.Component {
