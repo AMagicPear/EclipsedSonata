@@ -31,6 +31,9 @@ export default class Player extends cc.Component {
     @property(cc.Label)
     dialogText: cc.Label = null
 
+    @property(cc.AudioSource)
+    audio: cc.AudioSource = null
+
     kbPressed: Record<'left' | 'right' | 'up' | 'down', boolean> = {
         left: false,
         right: false,
@@ -49,6 +52,7 @@ export default class Player extends cc.Component {
         playNoteEvent.subscribe(([playerName, i]) => {
             if (playerName == this.playerName) {
                 this.sprite.spriteFrame = this.playingSprite
+                this.audio.play()
                 this.scheduleOnce(() => this.sprite.spriteFrame = this.stillSprite, 0.2)
             }
         })

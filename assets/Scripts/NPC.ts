@@ -56,7 +56,22 @@ export default class NPC extends cc.Component {
         if (event.keyCode == cc.macro.KEY.space) {
             if (this._currentDialogIndex == -1) {
                 this.noticeDialog.active = false
+            }
+            if (this._currentDialogIndex == this.dialogContent.length - 1) {
+                this.textBg.active = false
+                this.playerDong.stopSay()
+                this.dialogShowing = false
+                return
+            }
+            this._currentDialogIndex++
+            let currentDialogContent = this.dialogContent[this._currentDialogIndex]
+            if (currentDialogContent.role == 1) {
+                this.textBg.active = false
+                this.playerDong.say(currentDialogContent.text)
+            }
+            else if (currentDialogContent.role == 0) {
                 this.textBg.active = true
+                this.label.string = currentDialogContent.text
             }
         }
     }
@@ -67,7 +82,7 @@ export default class NPC extends cc.Component {
         this._disDong = Math.abs(this.node.x - this.playerDong.node.x)
         this._disXi = Math.abs(this.node.x - this.playerXi.node.x)
         let dis = Math.min(this._disDong, this._disXi)
-        if (dis < 60) {
+        if (dis < 60 && this._currentDialogIndex < this.dialogContent.length - 1) {
             if (!this.dialogShowing) {
                 this.dialogShowing = true
             }
