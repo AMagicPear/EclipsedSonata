@@ -1,14 +1,15 @@
-import EventEmitter from "./util/EventManager";
+import Player from "./Player";
+import { dialogShowEvent } from "./util/EventManager";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class NPC extends cc.Component {
-    @property(cc.Node)
-    playerDong: cc.Node = null
+    @property(Player)
+    playerDong: Player = null
 
-    @property(cc.Node)
-    playerXi: cc.Node = null
+    @property(Player)
+    playerXi: Player = null
 
     @property(cc.Node)
     textBg: cc.Node = null
@@ -25,44 +26,50 @@ export default class NPC extends cc.Component {
     _dialogShowing = false
     _disDong: number
     _disXi: number
-    _currentDialogIndex: number = 0
+    _currentDialogIndex: number = -1
 
-    dialogShowEvent: EventEmitter<boolean>
     get dialogShowing(): boolean {
         return this._dialogShowing
     }
 
     set dialogShowing(value: boolean) {
         this._dialogShowing = value
-        // this.label.enabled = value
-        this.noticeDialog.active = value
-        this.dialogShowEvent.invoke(value)
+        if (this._currentDialogIndex == -1) this.noticeDialog.active = value
+        else this.textBg.active = value
+        dialogShowEvent.invoke(value)
     }
 
+    dialogContent = [
+        { role: 0, text: "长老……" },
+        { role: 0, text: "为什么我的鼓……" },
+        { role: 0, text: "它今天敲不响了？" }
+    ]
+
     protected onLoad(): void {
-        this.label.enabled = false
         this.noticeDialog.active = false
         this.textBg.active = false
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
-        this.dialogShowEvent = new EventEmitter<boolean>('dialogShow')
     }
 
-    onKeyDown() {
-
+    onKeyDown(event: any) {
+        if (!this.dialogShowing) return
+        if (event.keyCode == cc.macro.KEY.space) {
+            if (this._currentDialogIndex == -1) {
+                this.noticeDialog.active = false
+                this.textBg.active = true
+            }
+        }
     }
 
     protected update(dt: number): void {
+        if (this.dialogShowing) return
         // 计算玩家角色与自身的X轴位置
-        this._disDong = Math.abs(this.node.x - this.playerDong.x)
-        this._disXi = Math.abs(this.node.x - this.playerDong.x)
+        this._disDong = Math.abs(this.node.x - this.playerDong.node.x)
+        this._disXi = Math.abs(this.node.x - this.playerDong.node.x)
         let dis = Math.min(this._disDong, this._disXi)
         if (dis < 60) {
             if (!this.dialogShowing) {
                 this.dialogShowing = true
-            }
-        } else {
-            if (this.dialogShowing) {
-                this.dialogShowing = false
             }
         }
     }

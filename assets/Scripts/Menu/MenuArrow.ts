@@ -8,7 +8,7 @@ export default class MenuArrow extends cc.Component {
     this.node.on('mousedown', (event: unknown) => {
       this.isActiveByMouse = true
     }, this)
-    this.node.on
+    // this.node.on
   }
 
   // update (dt) {}

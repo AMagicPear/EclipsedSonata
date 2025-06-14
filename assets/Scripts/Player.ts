@@ -1,5 +1,7 @@
+import { dialogShowEvent } from "./util/EventManager";
+
 const { ccclass, property } = cc._decorator;
-type PlayerName = '咚咚' | '淅淅'
+export type PlayerName = '咚咚' | '淅淅'
 
 @ccclass
 export default class Player extends cc.Component {
@@ -14,6 +16,12 @@ export default class Player extends cc.Component {
     @property(cc.Float)
     jumpImpFactor: number = 200
 
+    @property(cc.Node)
+    dialogBg: cc.Node = null
+
+    @property(cc.Label)
+    dialogText: cc.Label = null
+
     kbPressed: Record<'left' | 'right' | 'up' | 'down', boolean> = {
         left: false,
         right: false,
@@ -22,11 +30,13 @@ export default class Player extends cc.Component {
     }
 
     onGround: boolean = true
+    disalogStatus: boolean = false
 
     protected onLoad(): void {
         this.rigidbody = this.getComponent(cc.RigidBody)
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
+        dialogShowEvent.subscribe((show) => { this.disalogStatus = show })
     }
 
     onBeginContact(contact: cc.PhysicsContact, selfCollider: cc.Collider, otherCollider: cc.Collider): void {
@@ -42,6 +52,7 @@ export default class Player extends cc.Component {
     }
 
     protected update(dt: number): void {
+        if (this.disalogStatus) return
         if (this.kbPressed.left && this.kbPressed.right) return
         if (!this.kbPressed.left && !this.kbPressed.right) return
         // if (this.kbPressed.left) this.node.x -= this.speed_c * dt
@@ -53,37 +64,81 @@ export default class Player extends cc.Component {
     }
 
     onKeyDown(event: any): void {
-        switch (event.keyCode) {
-            case cc.macro.KEY.a:
-                this.kbPressed.left = true
-                break;
-            case cc.macro.KEY.d:
-                this.kbPressed.right = true
-                break;
-            case cc.macro.KEY.w:
-                this.kbPressed.up = true
-                if(this.onGround)
-                    this.rigidbody.applyLinearImpulse(new cc.Vec2(0, this.jumpImpFactor * this.rigidbody.getMass()), this.rigidbody.getLocalCenter(), true);
-                break
-            case cc.macro.KEY.s:
-                this.kbPressed.down = true
-                break
-        }
+        if (this.playerName == "咚咚") {
+            switch (event.keyCode) {
+                case cc.macro.KEY.a:
+                    this.kbPressed.left = true
+                    break;
+                case cc.macro.KEY.d:
+                    this.kbPressed.right = true
+                    break;
+                case cc.macro.KEY.w:
+                    this.kbPressed.up = true
+                    if (this.onGround && !this.disalogStatus)
+                        this.rigidbody.applyLinearImpulse(new cc.Vec2(0, this.jumpImpFactor * this.rigidbody.getMass()), this.rigidbody.getLocalCenter(), true);
+                    break
+                case cc.macro.KEY.s:
+                    this.kbPressed.down = true
+                    break
+            }
+        } else if (this.playerName == "淅淅") {
+            switch (event.keyCode) {
+                case cc.macro.KEY.left:
+                    this.kbPressed.left = true
+                    break;
+                case cc.macro.KEY.right:
+                    this.kbPressed.right = true
+                    break;
+                case cc.macro.KEY.up:
+                    this.kbPressed.up = true
+                    if (this.onGround && !this.disalogStatus)
+                        this.rigidbody.applyLinearImpulse(new cc.Vec2(0, this.jumpImpFactor * this.rigidbody.getMass()), this.rigidbody.getLocalCenter(), true);
+                    break
+                case cc.macro.KEY.down:
+                    this.kbPressed.down = true
+                    break
+            }
+        } else console.warn("玩家名称错误")
     }
 
     onKeyUp(event: any): void {
-        switch (event.keyCode) {
-            case cc.macro.KEY.a:
-                this.kbPressed.left = false
-            case cc.macro.KEY.d:
-                this.kbPressed.right = false
-                break;
-            case cc.macro.KEY.w:
-                this.kbPressed.up = false
-                break
-            case cc.macro.KEY.s:
-                this.kbPressed.down = false
-                break
+        if (this.playerName == "咚咚") {
+            switch (event.keyCode) {
+                case cc.macro.KEY.a:
+                    this.kbPressed.left = false
+                case cc.macro.KEY.d:
+                    this.kbPressed.right = false
+                    break;
+                case cc.macro.KEY.w:
+                    this.kbPressed.up = false
+                    break
+                case cc.macro.KEY.s:
+                    this.kbPressed.down = false
+                    break
+            }
+        } else if (this.playerName == "淅淅") {
+            switch (event.keyCode) {
+                case cc.macro.KEY.left:
+                    this.kbPressed.left = false
+                case cc.macro.KEY.right:
+                    this.kbPressed.right = false
+                    break;
+                case cc.macro.KEY.up:
+                    this.kbPressed.up = false
+                    break
+                case cc.macro.KEY.down:
+                    this.kbPressed.down = false
+                    break
+            }
         }
+    }
+
+    say(text: string) {
+        this.dialogBg.active = true
+        this.dialogText.string = text
+    }
+
+    stopSay(){
+        this.dialogBg.active = false
     }
 }

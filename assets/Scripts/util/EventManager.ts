@@ -1,4 +1,6 @@
-class EventEmitter<T> {
+import { PlayerName } from "../Player"
+
+export class EventEmitter<T> {
     private name: string
     private actions: ((arg: T) => void)[] = []
     subscribe(callback: (arg: T) => void): void {
@@ -19,4 +21,6 @@ class EventEmitter<T> {
     }
 }
 
-export default EventEmitter
+export const dialogShowEvent: EventEmitter<boolean> = new EventEmitter<boolean>('dialogShow')
+
+export const gainNoteEvent: EventEmitter<[PlayerName, number]> = new EventEmitter<[PlayerName, number]>('gainNote')
