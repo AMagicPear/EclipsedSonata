@@ -19477,7 +19477,9 @@ declare namespace cc {
 		export enum DrawBits {			
 			e_aabbBit = 0,
 			e_jointBit = 0,
-			e_shapeBit = 0,		
+			e_shapeBit = 0,
+            e_centerOfMassBit,
+            e_pairBit,		
 		}	
 	}
 		

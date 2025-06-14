@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="6" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" name="houses" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
+  <image source="场景素材/houses.png" width="1024" height="1024"/>
+ </tileset>
+ <layer id="1" name="图块层 1" width="6" height="10">
+  <data encoding="csv">
+419,420,0,0,423,424,
+451,0,0,0,0,0,
+419,420,421,422,423,424,
+451,452,453,454,455,456,
+483,484,485,486,487,488,
+515,516,581,582,519,520,
+611,612,613,614,615,616,
+675,774,677,678,679,680,
+707,708,709,710,713,712,
+739,740,741,742,743,744
+</data>
+ </layer>
+</map>
