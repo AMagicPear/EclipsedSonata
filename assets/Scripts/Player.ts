@@ -83,18 +83,18 @@ export default class Player extends cc.Component {
             }
         } else if (this.playerName == "淅淅") {
             switch (event.keyCode) {
-                case cc.macro.KEY.left:
+                case cc.macro.KEY.j:
                     this.kbPressed.left = true
                     break;
-                case cc.macro.KEY.right:
+                case cc.macro.KEY.l:
                     this.kbPressed.right = true
                     break;
-                case cc.macro.KEY.up:
+                case cc.macro.KEY.i:
                     this.kbPressed.up = true
                     if (this.onGround && !this.disalogStatus)
                         this.rigidbody.applyLinearImpulse(new cc.Vec2(0, this.jumpImpFactor * this.rigidbody.getMass()), this.rigidbody.getLocalCenter(), true);
                     break
-                case cc.macro.KEY.down:
+                case cc.macro.KEY.k:
                     this.kbPressed.down = true
                     break
             }
@@ -118,15 +118,15 @@ export default class Player extends cc.Component {
             }
         } else if (this.playerName == "淅淅") {
             switch (event.keyCode) {
-                case cc.macro.KEY.left:
+                case cc.macro.KEY.j:
                     this.kbPressed.left = false
-                case cc.macro.KEY.right:
+                case cc.macro.KEY.l:
                     this.kbPressed.right = false
                     break;
-                case cc.macro.KEY.up:
+                case cc.macro.KEY.i:
                     this.kbPressed.up = false
                     break
-                case cc.macro.KEY.down:
+                case cc.macro.KEY.k:
                     this.kbPressed.down = false
                     break
             }

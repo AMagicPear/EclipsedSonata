@@ -65,7 +65,7 @@ export default class NPC extends cc.Component {
         if (this.dialogShowing) return
         // 计算玩家角色与自身的X轴位置
         this._disDong = Math.abs(this.node.x - this.playerDong.node.x)
-        this._disXi = Math.abs(this.node.x - this.playerDong.node.x)
+        this._disXi = Math.abs(this.node.x - this.playerXi.node.x)
         let dis = Math.min(this._disDong, this._disXi)
         if (dis < 60) {
             if (!this.dialogShowing) {
