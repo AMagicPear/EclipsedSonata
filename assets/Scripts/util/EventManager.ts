@@ -24,3 +24,5 @@ export class EventEmitter<T> {
 export const dialogShowEvent: EventEmitter<boolean> = new EventEmitter<boolean>('dialogShow')
 
 export const gainNoteEvent: EventEmitter<[PlayerName, number]> = new EventEmitter<[PlayerName, number]>('gainNote')
+
+export const playNoteEvent: EventEmitter<[PlayerName, number]> = new EventEmitter<[PlayerName, number]>('playNote')
