@@ -649,9 +649,9 @@
     },
     "_angularVelocity": 0,
     "_fixedRotation": false,
-    "enabledContactListener": false,
+    "enabledContactListener": true,
     "bullet": false,
-    "awakeOnLoad": true,
+    "awakeOnLoad": false,
     "_id": "20siLOq1xA3bwuhg0blvGc"
   },
   {
@@ -662,7 +662,7 @@
       "__id__": 11
     },
     "_enabled": true,
-    "tag": 0,
+    "tag": 1,
     "_density": 1,
     "_sensor": false,
     "_friction": 0.2,
@@ -1132,7 +1132,7 @@
   {
     "__type__": "cc.Node",
     "_name": "咚咚Inner",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "_parent": {
       "__id__": 26
     },
@@ -1246,6 +1246,7 @@
     "_enabled": true,
     "playerName": "咚咚",
     "speed_c": 100,
+    "jumpImpFactor": 223.99999999999963,
     "_id": "86Pxrl6PlIqb3gRRtZJ01C"
   },
   {
@@ -1268,7 +1269,7 @@
     },
     "_angularVelocity": 0,
     "_fixedRotation": true,
-    "enabledContactListener": false,
+    "enabledContactListener": true,
     "bullet": false,
     "awakeOnLoad": true,
     "_id": "02vMAuTCFNMI7VXPQwasGF"
@@ -1281,7 +1282,7 @@
       "__id__": 26
     },
     "_enabled": true,
-    "tag": 0,
+    "tag": 2,
     "_density": 1,
     "_sensor": false,
     "_friction": 0.1,
@@ -1368,7 +1369,7 @@
   {
     "__type__": "cc.Node",
     "_name": "咚咚Inner",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "_parent": {
       "__id__": 33
     },
@@ -1482,6 +1483,7 @@
     "_enabled": true,
     "playerName": "淅淅",
     "speed_c": 100,
+    "jumpImpFactor": 200,
     "_id": "0dWMveaxBCGLm+11ApLcUE"
   },
   {

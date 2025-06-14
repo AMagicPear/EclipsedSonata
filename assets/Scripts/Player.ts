@@ -11,19 +11,34 @@ export default class Player extends cc.Component {
     @property(cc.Float)
     speed_c: number = 100
 
+    @property(cc.Float)
+    jumpImpFactor: number = 200
+
     kbPressed: Record<'left' | 'right' | 'up' | 'down', boolean> = {
         left: false,
         right: false,
         up: false,
         down: false
     }
-    
+
     onGround: boolean = true
 
     protected onLoad(): void {
         this.rigidbody = this.getComponent(cc.RigidBody)
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
+    }
+
+    onBeginContact(contact: cc.PhysicsContact, selfCollider: cc.Collider, otherCollider: cc.Collider): void {
+        if (otherCollider.tag == 1) {
+            this.onGround = true
+        }
+    }
+
+    onEndContact(contact: cc.PhysicsContact, selfCollider: cc.Collider, otherCollider: cc.Collider): void {
+        if (otherCollider.tag == 1) {
+            this.onGround = false
+        }
     }
 
     protected update(dt: number): void {
@@ -47,7 +62,8 @@ export default class Player extends cc.Component {
                 break;
             case cc.macro.KEY.w:
                 this.kbPressed.up = true
-                this.rigidbody.applyLinearImpulse(new cc.Vec2(0, 200 * this.rigidbody.getMass()), this.rigidbody.getLocalCenter(), true);
+                if(this.onGround)
+                    this.rigidbody.applyLinearImpulse(new cc.Vec2(0, this.jumpImpFactor * this.rigidbody.getMass()), this.rigidbody.getLocalCenter(), true);
                 break
             case cc.macro.KEY.s:
                 this.kbPressed.down = true

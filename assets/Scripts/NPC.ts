@@ -1,3 +1,5 @@
+import EventEmitter from "./util/EventManager";
+
 const { ccclass, property } = cc._decorator;
 
 @ccclass
@@ -24,6 +26,8 @@ export default class NPC extends cc.Component {
     _disDong: number
     _disXi: number
     _currentDialogIndex: number = 0
+
+    dialogShowEvent: EventEmitter<boolean>
     get dialogShowing(): boolean {
         return this._dialogShowing
     }
@@ -32,7 +36,7 @@ export default class NPC extends cc.Component {
         this._dialogShowing = value
         // this.label.enabled = value
         this.noticeDialog.active = value
-        
+        this.dialogShowEvent.invoke(value)
     }
 
     protected onLoad(): void {
@@ -40,9 +44,10 @@ export default class NPC extends cc.Component {
         this.noticeDialog.active = false
         this.textBg.active = false
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+        this.dialogShowEvent = new EventEmitter<boolean>('dialogShow')
     }
 
-    onKeyDown(){
+    onKeyDown() {
 
     }
 
@@ -54,12 +59,10 @@ export default class NPC extends cc.Component {
         if (dis < 60) {
             if (!this.dialogShowing) {
                 this.dialogShowing = true
-                console.log(this.dialogShowing)
             }
         } else {
             if (this.dialogShowing) {
                 this.dialogShowing = false
-                console.log(this.dialogShowing)
             }
         }
     }

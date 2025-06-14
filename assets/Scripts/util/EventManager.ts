@@ -1,3 +1,22 @@
-export enum GameEvent {
-    DIALOG_SHOW = 'dialog-show',
+class EventEmitter<T> {
+    private name: string
+    private actions: ((arg: T) => void)[] = []
+    subscribe(callback: (arg: T) => void): void {
+        this.actions.push(callback)
+    }
+
+    unsubscribe(callback: (arg: T) => void): void {
+        this.actions = this.actions.filter(action => action !== callback)
+    }
+
+    invoke(arg: T): void {
+        console.log("event triggerred:", this.name, arg)
+        this.actions.forEach(action => action(arg))
+    }
+
+    constructor(name: string) {
+        this.name = name
+    }
 }
+
+export default EventEmitter
