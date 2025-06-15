@@ -1,10 +1,11 @@
 import Player from "./Player";
-import { dialogShowEvent } from "./util/EventManager";
+import { dialogShowEvent, playNoteEvent } from "./util/EventManager";
+import IDialog from "./util/IDialog";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class NPC extends cc.Component {
+export default abstract class NPC extends cc.Component {
     @property(Player)
     playerDong: Player = null
 
@@ -20,13 +21,16 @@ export default class NPC extends cc.Component {
     @property(cc.Node)
     noticeDialog: cc.Node = null
 
-    @property([cc.String])
-    dialogs: string[] = []
-
     _dialogShowing = false
     _disDong: number
     _disXi: number
     _currentDialogIndex: number = -1
+
+    audioSource: cc.AudioSource = null
+    abstract hasSelfDialog: boolean
+
+    @property(cc.Boolean)
+    freeze: boolean = true
 
     get dialogShowing(): boolean {
         return this._dialogShowing
@@ -35,20 +39,18 @@ export default class NPC extends cc.Component {
     set dialogShowing(value: boolean) {
         this._dialogShowing = value
         if (this._currentDialogIndex == -1) this.noticeDialog.active = value
-        else this.textBg.active = value
-        dialogShowEvent.invoke(value)
+        else if (this.hasSelfDialog) this.textBg.active = value
+        if (this.freeze) dialogShowEvent.invoke(value)
     }
 
-    dialogContent = [
-        { role: 1, text: "长老……" },
-        { role: 1, text: "为什么我的鼓……" },
-        { role: 1, text: "它今天敲不响了？" }
-    ]
-
+    abstract dialogContent: IDialog[]
     protected onLoad(): void {
-        this.noticeDialog.active = false
-        this.textBg.active = false
+        if (this.hasSelfDialog) {
+            this.noticeDialog.active = false
+            this.textBg.active = false
+        }
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
+        this.audioSource = this.getComponent(cc.AudioSource)
     }
 
     onKeyDown(event: any) {
@@ -58,20 +60,36 @@ export default class NPC extends cc.Component {
                 this.noticeDialog.active = false
             }
             if (this._currentDialogIndex == this.dialogContent.length - 1) {
-                this.textBg.active = false
+                if (this.hasSelfDialog) {
+                    this.textBg.active = false
+                    this.dialogShowing = false
+                }
                 this.playerDong.stopSay()
-                this.dialogShowing = false
+                this.playerXi.stopSay()
                 return
             }
             this._currentDialogIndex++
             let currentDialogContent = this.dialogContent[this._currentDialogIndex]
             if (currentDialogContent.role == 1) {
-                this.textBg.active = false
+                if (this.hasSelfDialog) this.textBg.active = false
                 this.playerDong.say(currentDialogContent.text)
+                this.audioSource.play()
+            } else if (currentDialogContent.role == 2) {
+                if (this.hasSelfDialog) this.textBg.active = false
+                this.playerXi.say(currentDialogContent.text)
+                this.audioSource.play()
+                if (this._currentDialogIndex == 8) {
+                    playNoteEvent.invoke(['淅淅', 0])
+                }
             }
-            else if (currentDialogContent.role == 0) {
-                this.textBg.active = true
-                this.label.string = currentDialogContent.text
+            else if (currentDialogContent.role == 0 && this.hasSelfDialog) {
+                this.playerDong.stopSay()
+                this.playerXi.stopSay()
+                if (this.hasSelfDialog) {
+                    this.textBg.active = true
+                    this.label.string = currentDialogContent.text
+                }
+                this.audioSource.play()
             }
         }
     }

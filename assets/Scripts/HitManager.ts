@@ -43,6 +43,7 @@ export default class HitManager extends cc.Component {
             this.notesAll[playerName].UI[index].opacity = 100
             this.scheduleOnce(() => this.notesAll[playerName].UI[index].opacity = 255, 0.1)
         })
+        this.notesAll.淅淅.states[0] = true
     }
 
     onKeyDown(event: { keyCode: number }) {
@@ -61,9 +62,9 @@ export default class HitManager extends cc.Component {
         if (noteInfo) {
             const [playerName, index] = noteInfo;
             const stateArray = this.notesAll[playerName].states;
-            // if (stateArray[index]) {
-            playNoteEvent.invoke(noteInfo);
-            // }
+            if (stateArray[index]) {
+                playNoteEvent.invoke(noteInfo);
+            }
         }
     }
 }

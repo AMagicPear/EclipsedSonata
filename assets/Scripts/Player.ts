@@ -32,7 +32,13 @@ export default class Player extends cc.Component {
     dialogText: cc.Label = null
 
     @property(cc.AudioSource)
-    audio: cc.AudioSource = null
+    audioSource: cc.AudioSource = null
+
+    @property([cc.AudioClip])
+    notesClip: cc.AudioClip[] = []
+
+    @property(cc.AudioClip)
+    jumpAudio: cc.AudioClip = null
 
     kbPressed: Record<'left' | 'right' | 'up' | 'down', boolean> = {
         left: false,
@@ -52,7 +58,8 @@ export default class Player extends cc.Component {
         playNoteEvent.subscribe(([playerName, i]) => {
             if (playerName == this.playerName) {
                 this.sprite.spriteFrame = this.playingSprite
-                this.audio.play()
+                this.audioSource.clip = this.notesClip[i]
+                this.audioSource.play()
                 this.scheduleOnce(() => this.sprite.spriteFrame = this.stillSprite, 0.2)
             }
         })
@@ -93,8 +100,11 @@ export default class Player extends cc.Component {
                     break;
                 case cc.macro.KEY.w:
                     this.kbPressed.up = true
-                    if (this.onGround && !this.disalogStatus)
+                    if (this.onGround && !this.disalogStatus) {
                         this.rigidbody.applyLinearImpulse(new cc.Vec2(0, this.jumpImpFactor * this.rigidbody.getMass()), this.rigidbody.getLocalCenter(), true);
+                        this.audioSource.clip = this.jumpAudio
+                        this.audioSource.play()
+                    }
                     break
                 case cc.macro.KEY.s:
                     this.kbPressed.down = true
@@ -110,8 +120,11 @@ export default class Player extends cc.Component {
                     break;
                 case cc.macro.KEY.i:
                     this.kbPressed.up = true
-                    if (this.onGround && !this.disalogStatus)
+                    if (this.onGround && !this.disalogStatus) {
                         this.rigidbody.applyLinearImpulse(new cc.Vec2(0, this.jumpImpFactor * this.rigidbody.getMass()), this.rigidbody.getLocalCenter(), true);
+                        this.audioSource.clip = this.jumpAudio
+                        this.audioSource.play()
+                    }
                     break
                 case cc.macro.KEY.k:
                     this.kbPressed.down = true
