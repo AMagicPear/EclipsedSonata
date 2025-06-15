@@ -90,6 +90,7 @@ export default class Player extends cc.Component {
     }
 
     onKeyDown(event: cc.Event.EventKeyboard): void {
+        if (!this.rigidbody) return
         if (this.playerName == "咚咚") {
             switch (event.keyCode) {
                 case cc.macro.KEY.a:
@@ -134,6 +135,7 @@ export default class Player extends cc.Component {
     }
 
     onKeyUp(event: any): void {
+        if (!this.rigidbody) return
         if (this.playerName == "咚咚") {
             switch (event.keyCode) {
                 case cc.macro.KEY.a:

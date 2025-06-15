@@ -16,5 +16,9 @@ export default class Zhanglao extends NPC {
         { role: 2, text: "呜呜，今天的晚会是我练习了很久的歌曲……" },
         { role: 2, text: "可是，可是我拼尽全力也只能发出一个音符" },
         { role: 2, text: "我不会是被音符之神下了诅咒吧" },
+        { role: 0, text: "是八音盒丢了" },
+        { role: 0, text: "如果没有八音盒的话" },
+        { role: 0, text: "今天晚上的晚会也开不了了" },
+        { role: 0, text: "也许往前方探险能找到它吧" }
     ]
 }

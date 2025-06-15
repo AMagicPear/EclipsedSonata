@@ -18,6 +18,7 @@ export default class CircleEmiter extends cc.Component {
     circles: { noteIndex: number, insAngle: number, node: cc.Node }[] = []
     drumsToDraw: ScoreNote[] = []
     incomingIndex: number = 0
+    judgeIndex: number = 0
 
     @property(cc.Float)
     notesAheadTime: number = 5
@@ -50,8 +51,9 @@ export default class CircleEmiter extends cc.Component {
                 insAngle: this.node.angle,
                 node: newCircle
             })
-            console.log("当前曲谱下标", this.incomingIndex)
-            console.log(this.circles)
+            // this.scheduleOnce()
+            // console.log("当前曲谱下标", this.incomingIndex)
+            // console.log(this.circles)
             this.incomingIndex += 1
         }
     }
@@ -62,7 +64,13 @@ export default class CircleEmiter extends cc.Component {
     }
 
     private onKeyDown(event) {
-        console.log(this.audioSource.getCurrentTime(), event.keyCode)
-        this.testHitLabel.string = event.keyCode
+        if (Math.abs(this.audioSource.getCurrentTime() - this.drumsToDraw[this.judgeIndex].startTime - 2) < 0.2) {
+            this.testHitLabel.string = "hit"
+            this.circles.find(circle => circle.noteIndex == this.judgeIndex).node.color = new cc.Color(255, 0, 0, 255)
+            this.judgeIndex += 1
+        }
+        else {
+            this.testHitLabel.string = "miss"
+        }
     }
 }

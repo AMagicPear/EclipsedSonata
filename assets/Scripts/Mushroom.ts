@@ -7,7 +7,7 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Mushroom extends NPC {
     @property(cc.Node)
-    spoomMuseroom: cc.Node = null
+    spoomMushroom: cc.Node = null
 
     hasSelfDialog: boolean = false;
     dialogContent: IDialog[] = [
@@ -18,14 +18,20 @@ export default class Mushroom extends NPC {
         { role: 1, text: "要是我能够到蘑菇就好了" }
     ];
 
-    protected override onLoad(): void {
-        super.onLoad()
-        playNoteEvent.subscribe(_ => {
-            cc.tween(this.spoomMuseroom)
+    lightMushroom = (_: any) => {
+            cc.tween(this.spoomMushroom)
                 .to(0.4, { opacity: 255 })
                 .to(0.8, { opacity: 0 })
                 .start()
-        })
+        }
+
+    protected override onLoad(): void {
+        super.onLoad()
+        playNoteEvent.subscribe(this.lightMushroom)
+    }
+
+    protected onDestroy(): void {
+        playNoteEvent.unsubscribe(this.lightMushroom)
     }
 
     onBeginContact(contact: cc.PhysicsContact, selfCollider: cc.Collider, otherCollider: cc.Collider): void {

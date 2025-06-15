@@ -18,6 +18,9 @@ export default class HitManager extends cc.Component {
 
     notesAll: Record<PlayerName, { states: boolean[], UI: cc.Node[] }>
 
+    @property(cc.Boolean)
+    fullMode: boolean = false
+
     protected onLoad(): void {
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         this.notesAll = {
@@ -43,7 +46,15 @@ export default class HitManager extends cc.Component {
             this.notesAll[playerName].UI[index].opacity = 100
             this.scheduleOnce(() => this.notesAll[playerName].UI[index].opacity = 255, 0.1)
         })
-        this.notesAll.淅淅.states[0] = true
+        if (!this.fullMode) { this.notesAll.淅淅.states[0] = true }
+        else {
+            for (let i = 0; i < this.dongNotesUI.length; i++) {
+                gainNoteEvent.invoke(['咚咚', i])
+            }
+            for (let i = 0; i < this.xiNotesUI.length; i++) {
+                gainNoteEvent.invoke(['淅淅', i])
+            }
+        }
     }
 
     onKeyDown(event: cc.Event.EventKeyboard) {
