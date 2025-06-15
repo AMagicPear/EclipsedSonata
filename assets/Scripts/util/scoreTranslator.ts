@@ -1,4 +1,4 @@
-type NoteDong = 'E' | 'R' | 'Q' | 'F'
+// type NoteDong = 'E' | 'R' | 'Q' | 'F'
 
 type NoteXi = 'U' | 'O' | 'P' | 'H'
 
@@ -12,7 +12,7 @@ const CircleSpeedFromNoteXi: Record<NoteXi, number> = {
 export interface ScoreNote {
     startTime: number,  // 起始小节号
     // duration: number,   // 持续节拍数
-    note: NoteDong,     // 音符
+    note: number,     // 音符
 }
 
 export interface Score {
@@ -26,40 +26,40 @@ export let testScore: Score = {
     bpm: 60,
     drums: [{
         startTime: 5,
-        note: 'E'
+        note: 0
     }, {
         startTime: 6,
-        note: 'E'
+        note: 0
     }, {
         startTime: 8,
-        note: 'E'
+        note: 0
     },{
         startTime: 9,
-        note: 'E'
+        note: 0
     }, {
         startTime: 10,
-        note: 'E'
+        note: 0
     }, {
         startTime: 12,
-        note: 'E'
+        note: 0
     }, {
         startTime: 13,
-        note: 'E'
+        note: 0
     }, {
         startTime: 14,
-        note: 'E'
+        note: 0
     }, {
         startTime: 15,
-        note: 'E'
+        note: 0
     }, {
         startTime: 16,
-        note: 'E'
+        note: 0
     }, {
         startTime: 17,
-        note: 'E'
+        note: 0
     }, {
         startTime: 18,
-        note: 'E'
+        note: 0
     }
     ]
 }

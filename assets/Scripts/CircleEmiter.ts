@@ -1,3 +1,4 @@
+import { keyMap } from "./HitManager";
 import { testScore, ScoreNote, Score } from "./util/scoreTranslator";
 const { ccclass, property } = cc._decorator;
 
@@ -51,6 +52,9 @@ export default class CircleEmiter extends cc.Component {
                 insAngle: this.node.angle,
                 node: newCircle
             })
+            this.scheduleOnce(() => {
+                newCircle.destroy()
+            }, this.notesAheadTime + 3)
             // this.scheduleOnce()
             // console.log("当前曲谱下标", this.incomingIndex)
             // console.log(this.circles)
@@ -63,8 +67,11 @@ export default class CircleEmiter extends cc.Component {
         console.log(`已加载曲谱，共${this.drumsToDraw.length}个音符`)
     }
 
-    private onKeyDown(event) {
-        if (Math.abs(this.audioSource.getCurrentTime() - this.drumsToDraw[this.judgeIndex].startTime - 2) < 0.2) {
+    private onKeyDown(event: cc.Event.EventKeyboard) {
+        if(!this.drumsToDraw[this.judgeIndex]) return
+        const [playerName, noteIndex] = keyMap[event.keyCode]
+        if (Math.abs(this.audioSource.getCurrentTime() - this.drumsToDraw[this.judgeIndex].startTime - 2) < 0.2 
+            && this.drumsToDraw[this.judgeIndex].note == noteIndex) {
             this.testHitLabel.string = "hit"
             this.circles.find(circle => circle.noteIndex == this.judgeIndex).node.color = new cc.Color(255, 0, 0, 255)
             this.judgeIndex += 1

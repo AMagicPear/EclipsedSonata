@@ -3836,7 +3836,7 @@
     "noticeDialog": {
       "__id__": 90
     },
-    "freeze": false,
+    "freeze": true,
     "_id": "a5kL/UcARPZLDn8tLan184"
   },
   {
@@ -7109,6 +7109,7 @@
         "__id__": 154
       }
     ],
+    "fullMode": false,
     "_id": "c0wYwqu/pCXJewX7I2jpJl"
   }
 ]

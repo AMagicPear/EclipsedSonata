@@ -4,7 +4,16 @@ import { gainNoteEvent, playNoteEvent } from "./util/EventManager";
 const { ccclass, property } = cc._decorator;
 // const DongNotes = ['e', 'r', 'q', 'f']
 // const XiNotes = ['u', 'o', 'p', 'h']
-
+export const keyMap: Record<number, [PlayerName, number]> = {
+    [cc.macro.KEY.e]: ['咚咚', 0],
+    [cc.macro.KEY.r]: ['咚咚', 1],
+    [cc.macro.KEY.q]: ['咚咚', 2],
+    [cc.macro.KEY.f]: ['咚咚', 3],
+    [cc.macro.KEY.u]: ['淅淅', 0],
+    [cc.macro.KEY.o]: ['淅淅', 1],
+    [cc.macro.KEY.p]: ['淅淅', 2],
+    [cc.macro.KEY.h]: ['淅淅', 3],
+};
 @ccclass
 export default class HitManager extends cc.Component {
     @property([cc.Node])
@@ -46,6 +55,9 @@ export default class HitManager extends cc.Component {
             this.notesAll[playerName].UI[index].opacity = 100
             this.scheduleOnce(() => this.notesAll[playerName].UI[index].opacity = 255, 0.1)
         })
+    }
+
+    protected start(): void {
         if (!this.fullMode) { this.notesAll.淅淅.states[0] = true }
         else {
             for (let i = 0; i < this.dongNotesUI.length; i++) {
@@ -57,18 +69,9 @@ export default class HitManager extends cc.Component {
         }
     }
 
-    onKeyDown(event: cc.Event.EventKeyboard) {
-        const keyMap: Record<number, [PlayerName, number]> = {
-            [cc.macro.KEY.e]: ['咚咚', 0],
-            [cc.macro.KEY.r]: ['咚咚', 1],
-            [cc.macro.KEY.q]: ['咚咚', 2],
-            [cc.macro.KEY.f]: ['咚咚', 3],
-            [cc.macro.KEY.u]: ['淅淅', 0],
-            [cc.macro.KEY.o]: ['淅淅', 1],
-            [cc.macro.KEY.p]: ['淅淅', 2],
-            [cc.macro.KEY.h]: ['淅淅', 3],
-        };
 
+
+    onKeyDown(event: cc.Event.EventKeyboard) {
         const noteInfo = keyMap[event.keyCode];
         if (noteInfo) {
             const [playerName, index] = noteInfo;
