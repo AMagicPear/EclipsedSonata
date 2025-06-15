@@ -15,7 +15,7 @@ export default class Player extends cc.Component {
         console.log(this.body);
     }
 
-    onKeyDown(event: any): void {
+    onKeyDown(event: cc.Event.EventKeyboard): void {
         switch (event.keyCode) {
             case cc.macro.KEY.a:
                 this.speed = -this.speed_c;

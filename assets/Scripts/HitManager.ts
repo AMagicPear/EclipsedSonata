@@ -46,7 +46,7 @@ export default class HitManager extends cc.Component {
         this.notesAll.淅淅.states[0] = true
     }
 
-    onKeyDown(event: { keyCode: number }) {
+    onKeyDown(event: cc.Event.EventKeyboard) {
         const keyMap: Record<number, [PlayerName, number]> = {
             [cc.macro.KEY.e]: ['咚咚', 0],
             [cc.macro.KEY.r]: ['咚咚', 1],

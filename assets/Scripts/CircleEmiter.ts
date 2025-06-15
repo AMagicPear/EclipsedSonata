@@ -18,7 +18,7 @@ export default class CircleEmiter extends cc.Component {
     circles: { noteIndex: number, insAngle: number, node: cc.Node }[] = []
     drumsToDraw: ScoreNote[] = []
     incomingIndex: number = 0
-    
+
     @property(cc.Float)
     notesAheadTime: number = 5
     // elaspedTime: number = 0
@@ -61,7 +61,7 @@ export default class CircleEmiter extends cc.Component {
         console.log(`已加载曲谱，共${this.drumsToDraw.length}个音符`)
     }
 
-    private onKeyDown(event: any) {
+    private onKeyDown(event) {
         console.log(this.audioSource.getCurrentTime(), event.keyCode)
         this.testHitLabel.string = event.keyCode
     }

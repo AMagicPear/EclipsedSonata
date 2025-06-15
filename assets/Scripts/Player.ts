@@ -89,7 +89,7 @@ export default class Player extends cc.Component {
             this.rigidbody.applyForce(new cc.Vec2(100 * this.rigidbody.getMass(), 0), this.rigidbody.getLocalCenter(), true);
     }
 
-    onKeyDown(event: any): void {
+    onKeyDown(event: cc.Event.EventKeyboard): void {
         if (this.playerName == "咚咚") {
             switch (event.keyCode) {
                 case cc.macro.KEY.a:

@@ -53,7 +53,7 @@ export default abstract class NPC extends cc.Component {
         this.audioSource = this.getComponent(cc.AudioSource)
     }
 
-    onKeyDown(event: any) {
+    onKeyDown(event: cc.Event.EventKeyboard) {
         if (!this.dialogShowing) return
         if (event.keyCode == cc.macro.KEY.space) {
             if (this._currentDialogIndex == -1) {
